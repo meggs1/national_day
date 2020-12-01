@@ -1,4 +1,4 @@
-class Holiday
+class NationalDay::Holiday
 
 
 
