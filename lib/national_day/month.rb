@@ -1,31 +1,24 @@
-# class Month
-# attr_accessor :name, :link, :description
-# @@all = []
+class NationalDay::Month
+    @@all = []
+    attr_accessor :name, :holidays, :days
 
-# def initialize(name, link)
-#     @name = name
-#     @link = link
-#     @description = description
+    def initialize(name)
+        @name = name
+        @holidays = []
+        save
+    end
     
-#     save
-# end
+    def self.all
+        NationalDay::Scraper.scrape_months if @@all.empty?
+        @@all
+    end
 
-# def self.create(month_array)
-#     month_array.each do |month|
-#         self.new(month)
-#     end
-# end
-
-# def self.all
-#     Scraper.scrape_months if @@all.empty?
-#     @@all
-# end
-
-# def save
-#     @@all << self
-# end
+    def save
+        @@all << self
+    end
 
 
-
-# end
-
+    def get_holidays
+        NationalDay::Scraper.scrape_holidays(self) if @holidays.empty?
+    end
+end
