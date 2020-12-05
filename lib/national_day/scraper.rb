@@ -1,52 +1,15 @@
 class NationalDay::Scraper
 
-    def self.scrape_months
-        doc = Nokogiri::HTML(open("https://nationaltoday.com/national-day-calendar/"))
-        months = doc.css("h2.daycal-month-name")
+    def self.scrape_main_page
+        doc = Nokogiri::HTML(open("https://nationaltoday.com"))
+        day_cards = doc.css("div.slider-day-content")
 
-        months.each do |month|
-            name = month.text
-            NationalDay::Month.new(name)
+        day_cards.each do |day_card|
+            date = day_card.css("span.ntdb-holiday-date").text
+            link = day_card.css("a").attr("href")
+            name = day_card.css("h2.holiday-title-text").text
+            NationalDay::Holiday.new(name, date, link)
         end
     end
 
-    def self.scrape_holidays(month)
-        doc = Nokogiri::HTML(open("https://nationaltoday.com/#{month.name.downcase}-holidays"))
-        holidays = doc.css("tr.row-data")
-        holidays.each do |h|
-            name = h.css("td.title").text
-            category = h.css("td.category").text
-            link = h.css("td.title a").attr("href").value
-            NationalDay::Holiday.new(name, month, category, link)
-        end
-    end
-
-    def self.scrape_description(holiday)
-        doc = Nokogiri::HTML(open(holiday.link))
-        pages = doc.css("div.page-content-wrap")
-
-        pages.each do |page|
-            description = page.css("div.holiday-section.holiday-content").text
-            holiday.description << description
-            
-        end
-        
-    end
-    
-    
-
-    
 end
-
-##WORKING w
-# def self.scrape_days(month)
-#     doc = Nokogiri::HTML(open("https://nationaltoday.com/#{month.name.downcase}-holidays"))
-#     days = doc.css("tr.row-data")
-#     days.each do |day|
-#         name = day.css("td.title").text
-#         category = day.css("td.category").text
-#         link = day.css("td.title a").attr("href").value
-#         NationalDay::Holiday.new(name, month, category, link)
-#     end
-
-# end
