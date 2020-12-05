@@ -1,24 +1,25 @@
 class NationalDay::Month
+    attr_accessor :name, :link, :celebrations
     @@all = []
-    attr_accessor :name, :holidays, :days
-
-    def initialize(name)
+    
+    def initialize(name, link)
         @name = name
-        @holidays = []
+        @link = link
+        @celebrations = []
         save
     end
-    
+
     def self.all
         NationalDay::Scraper.scrape_months if @@all.empty?
         @@all
+    end
+    
+    def get_celebrations
+        NationalDay::Scraper.scrape_celebration(self) if @celebrations.empty?
     end
 
     def save
         @@all << self
     end
 
-
-    def get_holidays
-        NationalDay::Scraper.scrape_holidays(self) if @holidays.empty?
-    end
 end

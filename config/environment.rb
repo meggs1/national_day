@@ -1,6 +1,7 @@
 require 'pry'
 require 'nokogiri'
 require 'open-uri'
+require 'httparty'
 
 require_relative '../lib/national_day/version.rb'
 require_relative '../lib/national_day/cli.rb'
